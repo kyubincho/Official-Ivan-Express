@@ -1,25 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ThemeProvider, Typography } from "@mui/material";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.css";
+import { Navbar } from "./components/Navbar";
+import { Path } from "./helpers/Path";
+import { MainTheme } from "./helpers/Theme";
+import { AdminPage } from "./pages/AdminPage";
+import { HelloWorld } from "./pages/HelloWorld";
+import { OfficialHikes } from "./pages/OfficialHikes/OfficialHikes";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={MainTheme}>
+      <Router>
+        <Routes>
+          <Route
+            path={Path.Home}
+            element={
+              <>
+                <Navbar />
+                <Typography>home</Typography>
+              </>
+            }
+          />
+          <Route path={Path.Films} element={<HelloWorld />} />
+          <Route path={Path["Official Hikes"]} element={<OfficialHikes />} />
+          <Route path={Path["Duke of Edinburgh"]} element={<HelloWorld />} />
+          <Route path={Path["Admin Page"]} element={<AdminPage />} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 
