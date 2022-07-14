@@ -93,15 +93,14 @@ export function OfficialHikePage() {
         <Typography gutterBottom variant="h6">
           {hike.Date}
         </Typography>
-        <Container
-          sx={{
-            marginTop: "60px",
-            marginBottom: "60px",
-          }}
-        >
-          {["x", "", null].includes(hike.Youtube) ? (
-            ""
-          ) : (
+
+        {!["x", "", null].includes(hike.Youtube) && (
+          <Container
+            sx={{
+              marginTop: "60px",
+              marginBottom: "60px",
+            }}
+          >
             <iframe
               title="Youtube Video"
               src={hike.Youtube}
@@ -111,8 +110,9 @@ export function OfficialHikePage() {
               height="630"
               frameBorder="0"
             ></iframe>
-          )}
-        </Container>
+          </Container>
+        )}
+
         <Typography>Distance: {hike.Distance}km</Typography>
         <Typography>Ascent: {hike.Ascent}m</Typography>
         <Typography>
