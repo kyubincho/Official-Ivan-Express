@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   setDoc,
@@ -29,6 +30,7 @@ export async function convertToFirestore(hikes: Hike[]) {
   }
 }
 
+// Get full list of hikes
 export async function getOfficialHikes() {
   const hikes = await getDocs(
     query(collection(db, "hikes"), where("id", "<", 1000))
@@ -40,6 +42,13 @@ export async function getOfficialHikes() {
   return hikesArray;
 }
 
+// Get Single Hike
+export async function getOfficialHike(id: string) {
+  const hike = await getDoc(doc(db, "hikes", id));
+  return hike.data() as Hike;
+}
+
+// Get Duke of Ed Hikes
 export async function getDukeOfEdHikes() {
   const hikes = await getDocs(
     query(collection(db, "hikes"), where("id", ">=", 1000))

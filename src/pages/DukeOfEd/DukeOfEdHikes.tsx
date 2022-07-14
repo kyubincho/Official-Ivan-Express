@@ -3,22 +3,22 @@ import { useEffect, useState } from "react";
 import { Loading } from "../../components/Loading";
 import { Navbar } from "../../components/Navbar";
 import { Hike } from "../../models/Hike";
-import { getOfficialHikes } from "../../services/hikes";
-import { HikeCard } from "./HikeCard";
+import { getDukeOfEdHikes } from "../../services/hikes";
+import { HikeCard } from "../OfficialHikes/HikeCard";
 
 interface OfficialHikesInterface {
   loading: boolean;
   hikes: Hike[];
 }
 
-export function OfficialHikes() {
+export function DukeOfEdHikes() {
   const [state, setState] = useState<OfficialHikesInterface>({
     loading: true,
     hikes: [],
   });
 
   useEffect(() => {
-    getOfficialHikes().then((hikesFromFirestore) =>
+    getDukeOfEdHikes().then((hikesFromFirestore) =>
       setState({ ...state, hikes: hikesFromFirestore, loading: false })
     );
 
@@ -33,7 +33,7 @@ export function OfficialHikes() {
     <>
       <Navbar />
       <Container
-        maxWidth="xl"
+        maxWidth="lg"
         sx={{
           marginBottom: "200px",
         }}
@@ -47,11 +47,11 @@ export function OfficialHikes() {
             marginLeft: "0px",
           }}
         >
-          Official Hikes
+          Duke of Edinburgh
         </Typography>
         <Grid container spacing={3}>
           {hikes.map((hike, i) => (
-            <HikeCard hike={hike} key={i} />
+            <HikeCard hike={hike} isDOE={true} key={i} />
           ))}
         </Grid>
       </Container>
