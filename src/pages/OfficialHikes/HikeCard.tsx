@@ -1,4 +1,7 @@
 import HikingIcon from "@mui/icons-material/Hiking";
+import TerrainIcon from "@mui/icons-material/Terrain";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import StarIcon from "@mui/icons-material/Star";
 import {
   Card,
   CardActionArea,
@@ -56,7 +59,7 @@ export const HikeCard = ({ hike, isDOE }: { hike: Hike; isDOE?: Boolean }) => {
                   item
                   xs={3}
                 >
-                  <HikingIcon />
+                  <TerrainIcon />
                   <Typography color="textSecondary" variant="body2">
                     {hike.Ascent}m
                   </Typography>
@@ -69,7 +72,7 @@ export const HikeCard = ({ hike, isDOE }: { hike: Hike; isDOE?: Boolean }) => {
                   item
                   xs={3}
                 >
-                  <HikingIcon />
+                  <PeopleAltIcon />
                   <Typography color="textSecondary" variant="body2">
                     {hike.PPL === null ? 0 : hike.PPL}
                   </Typography>
@@ -82,7 +85,7 @@ export const HikeCard = ({ hike, isDOE }: { hike: Hike; isDOE?: Boolean }) => {
                   item
                   xs={3}
                 >
-                  <HikingIcon />
+                  <StarIcon />
                   <Typography color="textSecondary" variant="body2">
                     {hike.Difficulty}
                   </Typography>

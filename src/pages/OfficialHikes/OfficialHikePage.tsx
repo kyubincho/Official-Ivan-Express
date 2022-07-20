@@ -125,6 +125,15 @@ export function OfficialHikePage() {
           Participants: {hike.PPL} (
           {people.filter((person) => Number(hike[person]) === 1).join(", ")})
         </Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            marginTop: "15px",
+          }}
+        >
+          Description:{" "}
+        </Typography>
+        <Typography>{hike.Description}</Typography>
         <Container
           sx={{
             marginTop: "60px",
@@ -136,7 +145,7 @@ export function OfficialHikePage() {
             size="large"
             onClick={() => window.open(hike.Album_Link)}
           >
-            <Typography>View Full ALbum</Typography>
+            <Typography>View Full Album</Typography>
           </Button>
         </Container>
         <CardMedia
