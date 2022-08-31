@@ -96,23 +96,30 @@ export function OfficialHikes() {
   const [state, setState] = useState<OfficialHikesInterface>({
     loading: true,
     hikes: [],
-    reverse: false,
-    sortByCurr: "",
+    reverse: true,
+    sortByCurr: "Date",
     sortLoading: false,
   });
 
   useEffect(() => {
-    getOfficialHikes().then((hikesFromFirestore) =>
-      setState({ ...state, hikes: hikesFromFirestore, loading: false })
-    );
+    getOfficialHikes().then((hikesFromFirestore) => {
+      setState({
+        ...state,
+        hikes: hikesFromFirestore.sort(
+          (a, b) => (createDate(b["Date"]) > createDate(a["Date"]) ? 1 : -1) // initialize as Date sorted by reverse: true line 99
+        ),
+        loading: false,
+      });
+    });
 
     // eslint-disable-next-line
   }, []);
 
-  const [age, setAge] = React.useState("");
-
   const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
+    setState({
+      ...state,
+      sortByCurr: event.target.value,
+    });
   };
 
   const { hikes, loading, reverse, sortByCurr, sortLoading } = state;
@@ -147,29 +154,26 @@ export function OfficialHikes() {
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
-              value={age}
+              value={sortByCurr}
               onChange={handleChange}
               label="Sort By"
             >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
               <MenuItem
-                value={10}
+                value={"Location"}
                 disabled={sortLoading}
                 onClick={() => sortHikes("Location")}
               >
                 Location
               </MenuItem>
               <MenuItem
-                value={20}
+                value={"Date"}
                 disabled={sortLoading}
                 onClick={() => sortDate("Date")}
               >
                 Date
               </MenuItem>
               <MenuItem
-                value={30}
+                value={"Distance"}
                 disabled={sortLoading}
                 onClick={() => sortNumber("Distance")}
               >
