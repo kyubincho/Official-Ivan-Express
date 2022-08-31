@@ -22,6 +22,7 @@ export async function convertToFirestore(hikes: Hike[]) {
     const hikeCardImageUrl = hikeCardImageFind
       ? await getDownloadURL(hikeCardImageFind)
       : "";
+    console.log(hikes[i]["No."]);
     await setDoc(doc(db, "hikes", String(hikes[i]["No."])), {
       ...hikes[i],
       id: hikes[i]["No."],
