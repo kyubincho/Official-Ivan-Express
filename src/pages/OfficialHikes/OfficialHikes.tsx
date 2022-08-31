@@ -1,4 +1,14 @@
-import { Container, Grid, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { Loading } from "../../components/Loading";
 import { Navbar } from "../../components/Navbar";
@@ -6,15 +16,89 @@ import { Hike } from "../../models/Hike";
 import { getOfficialHikes } from "../../services/hikes";
 import { HikeCard } from "./HikeCard";
 
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import SwapVertIcon from "@mui/icons-material/SwapVert";
+import React from "react";
+
 interface OfficialHikesInterface {
   loading: boolean;
   hikes: Hike[];
+  reverse: boolean;
+  sortByCurr: string;
+  sortLoading: boolean;
 }
 
 export function OfficialHikes() {
+  function createDate(date: string) {
+    const dateParts = date.split("/");
+    const newDate = new Date(
+      +dateParts[2],
+      Number(dateParts[1]) - 1,
+      +dateParts[0].split("-")[0]
+    );
+
+    return newDate;
+  }
+
+  function sortHikes(sortBy: string) {
+    setState({ ...state, sortLoading: true });
+    const tempReverse = sortByCurr === sortBy ? !reverse : false;
+
+    setState({
+      ...state,
+      hikes:
+        tempReverse === false
+          ? hikes.sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
+          : hikes.sort((a, b) => b[sortBy].localeCompare(a[sortBy])),
+      reverse: tempReverse,
+      sortByCurr: sortBy,
+      sortLoading: false,
+    });
+  }
+
+  function sortNumber(sortBy: string) {
+    setState({ ...state, sortLoading: true });
+    const tempReverse = sortByCurr === sortBy ? !reverse : false;
+
+    setState({
+      ...state,
+      hikes:
+        tempReverse === false
+          ? hikes.sort((a, b) => (a[sortBy] < b[sortBy] ? 1 : -1))
+          : hikes.sort((a, b) => (b[sortBy] < a[sortBy] ? 1 : -1)),
+      reverse: tempReverse,
+      sortByCurr: sortBy,
+      sortLoading: false,
+    });
+  }
+
+  function sortDate(sortBy: string) {
+    setState({ ...state, sortLoading: true });
+    const tempReverse = sortByCurr === sortBy ? !reverse : false;
+
+    setState({
+      ...state,
+      hikes:
+        tempReverse === false
+          ? hikes.sort((a, b) =>
+              createDate(a[sortBy]) > createDate(b[sortBy]) ? 1 : -1
+            )
+          : hikes.sort((a, b) =>
+              createDate(b[sortBy]) > createDate(a[sortBy]) ? 1 : -1
+            ),
+      reverse: tempReverse,
+      sortByCurr: sortBy,
+      sortLoading: false,
+    });
+  }
+
   const [state, setState] = useState<OfficialHikesInterface>({
     loading: true,
     hikes: [],
+    reverse: false,
+    sortByCurr: "",
+    sortLoading: false,
   });
 
   useEffect(() => {
@@ -25,7 +109,13 @@ export function OfficialHikes() {
     // eslint-disable-next-line
   }, []);
 
-  const { hikes, loading } = state;
+  const [age, setAge] = React.useState("");
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setAge(event.target.value);
+  };
+
+  const { hikes, loading, reverse, sortByCurr, sortLoading } = state;
 
   return loading ? (
     <Loading />
@@ -49,6 +139,59 @@ export function OfficialHikes() {
         >
           Official Hikes
         </Typography>
+        <div>
+          <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+            <InputLabel id="demo-simple-select-standard-label">
+              Sort By
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={age}
+              onChange={handleChange}
+              label="Sort By"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem
+                value={10}
+                disabled={sortLoading}
+                onClick={() => sortHikes("Location")}
+              >
+                Location
+              </MenuItem>
+              <MenuItem
+                value={20}
+                disabled={sortLoading}
+                onClick={() => sortDate("Date")}
+              >
+                Date
+              </MenuItem>
+              <MenuItem
+                value={30}
+                disabled={sortLoading}
+                onClick={() => sortNumber("Distance")}
+              >
+                Distance
+              </MenuItem>
+            </Select>
+          </FormControl>
+          <Button
+            disabled={sortLoading}
+            onClick={() => {
+              sortByCurr === "Location"
+                ? sortHikes("Location")
+                : sortByCurr === "Date"
+                ? sortDate("Date")
+                : sortByCurr === "Distance"
+                ? sortNumber("Distance")
+                : sortHikes("Location");
+            }}
+          >
+            <SwapVertIcon />
+          </Button>
+        </div>
         <Grid container spacing={3}>
           {hikes.map((hike, i) => (
             <HikeCard hike={hike} key={i} />
