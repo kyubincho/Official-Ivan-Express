@@ -46,7 +46,10 @@ export async function getOfficialHikes() {
 // Get Single Hike
 export async function getOfficialHike(id: string) {
   const hike = await getDoc(doc(db, "hikes", id));
-  return hike.data() as Hike;
+  if (hike.exists()) {
+    return hike.data() as Hike;
+  }
+  throw new Error("bruh");
 }
 
 // Get Duke of Ed Hikes

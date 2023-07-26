@@ -27,7 +27,7 @@ export function OfficialHikePage() {
     } else {
       getOfficialHike(id).then((hikeData) =>
         setState({ ...state, hike: hikeData, loading: false })
-      );
+      ).catch(err => navigate(Path["Official Hikes"]));
     }
     // eslint-disable-next-line
   }, []);
@@ -116,7 +116,7 @@ export function OfficialHikePage() {
         <Typography>Distance: {hike.Distance}km</Typography>
         <Typography>Ascent: {hike.Ascent}m</Typography>
         <Typography>
-          Difficulty: {hike.Difficulty} ({Math.round(Number(hike.Diff3))})
+          Difficulty: {hike.Difficulty} ({Math.round(Number(hike.Diff))})
         </Typography>
         <Typography>
           Logbook: {Number(hike.Log) === 1 ? "yes" : "no"}
