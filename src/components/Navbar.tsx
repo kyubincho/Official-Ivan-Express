@@ -8,6 +8,7 @@ export function Navbar() {
     { to: Path.Films, title: "Films" },
     { to: Path["Official Hikes"], title: "Official Hikes" },
     { to: Path["Duke of Edinburgh"], title: "Duke of Edinburgh" },
+    { to: Path["Admin Page"], title: "Admin Page" },
   ];
   return (
     <>
