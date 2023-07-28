@@ -93,6 +93,38 @@ export function OfficialHikes() {
     });
   }
 
+  function sortAscent(sortBy: string) {
+    setState({ ...state, sortLoading: true });
+    const tempReverse = sortByCurr === sortBy ? !reverse : false;
+
+    setState({
+      ...state,
+      hikes:
+        tempReverse === false
+          ? hikes.sort((a, b) => (a[sortBy] < b[sortBy] ? 1 : -1))
+          : hikes.sort((a, b) => (b[sortBy] < a[sortBy] ? 1 : -1)),
+      reverse: tempReverse,
+      sortByCurr: sortBy,
+      sortLoading: false,
+    });
+  }
+
+  function sortDiff(sortBy: string) {
+    setState({ ...state, sortLoading: true });
+    const tempReverse = sortByCurr === sortBy ? !reverse : false;
+
+    setState({
+      ...state,
+      hikes:
+        tempReverse === false
+          ? hikes.sort((a, b) => (a[sortBy] < b[sortBy] ? 1 : -1))
+          : hikes.sort((a, b) => (b[sortBy] < a[sortBy] ? 1 : -1)),
+      reverse: tempReverse,
+      sortByCurr: sortBy,
+      sortLoading: false,
+    });
+  }
+
   const [state, setState] = useState<OfficialHikesInterface>({
     loading: true,
     hikes: [],
@@ -163,7 +195,7 @@ export function OfficialHikes() {
                 disabled={sortLoading}
                 onClick={() => sortHikes("Location")}
               >
-                Location
+                Name
               </MenuItem>
               <MenuItem
                 value={"Date"}
@@ -179,6 +211,20 @@ export function OfficialHikes() {
               >
                 Distance
               </MenuItem>
+              <MenuItem
+                value={"Ascent"}
+                disabled={sortLoading}
+                onClick={() => sortAscent("Ascent")}
+              >
+                Ascent
+              </MenuItem>
+              <MenuItem
+                value={"Diff"}
+                disabled={sortLoading}
+                onClick={() => sortDiff("Diff")}
+              >
+                Difficulty
+              </MenuItem>
             </Select>
           </FormControl>
           <Button
@@ -190,6 +236,10 @@ export function OfficialHikes() {
                 ? sortDate("Date")
                 : sortByCurr === "Distance"
                 ? sortNumber("Distance")
+                : sortByCurr === "Ascent"
+                ? sortAscent("Ascent")
+                : sortByCurr === "Diff"
+                ? sortDiff("Diff")
                 : sortHikes("Location");
             }}
           >

@@ -11,12 +11,14 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Path } from "../../helpers/Path";
 import { Hike } from "../../models/Hike";
 
 export const HikeCard = ({ hike, isDOE }: { hike: Hike; isDOE?: Boolean }) => {
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+
   return (
     <Grid item xs={12} sm={6} lg={4} xl={isDOE ? 4 : 3}>
       <Card>
@@ -25,7 +27,8 @@ export const HikeCard = ({ hike, isDOE }: { hike: Hike; isDOE?: Boolean }) => {
         >
           <CardMedia
             component="img"
-            image={hike.hikeCardImageUrl}
+            //image={hike.hikeCardImageUrl}
+            image={require("../../websiteImages/" + hike.id + ".jpg")} // 2023-07-28 - Updated image source from Firebase to local folder
             alt="Image was not found :)"
             height="300"
           />
@@ -87,7 +90,7 @@ export const HikeCard = ({ hike, isDOE }: { hike: Hike; isDOE?: Boolean }) => {
                 >
                   <StarIcon />
                   <Typography color="textSecondary" variant="body2">
-                    {hike.Difficulty}
+                    {hike.Difficulty} ({Math.round(Number(hike.Diff))})
                   </Typography>
                 </Grid>
               </Grid>

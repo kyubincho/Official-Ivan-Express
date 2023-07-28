@@ -106,8 +106,8 @@ export function OfficialHikePage() {
               src={hike.Youtube}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen={true}
-              width="1120"
-              height="630"
+              width="100%"
+              height="648"
               frameBorder="0"
             ></iframe>
           </Container>
@@ -150,7 +150,8 @@ export function OfficialHikePage() {
         </Container>
         <CardMedia
           component="img"
-          image={hike.hikeCardImageUrl}
+          //image={hike.hikeCardImageUrl}
+          image={require("../../websiteImages/" + hike.id + ".jpg")}  // 2023-07-28 - Updated image source from Firebase to local folder
           alt="Image was not found :)"
         />
       </Container>
